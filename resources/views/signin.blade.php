@@ -12,8 +12,8 @@
                 <img src="/res/logo.png" alt="Img logo"></div>
             <h4 class="title">
                 <span>
-                    <a class="active" data-pjax="true" href="http://www.jianshu.com/sign_in">登录</a> <b>·</b>
-                    <a class="" data-pjax="true" href="http://www.jianshu.com/sign_up">注册</a>
+                    <a class="active" data-pjax="true" href="/signin">登录</a> <b>·</b>
+                    <a class="" data-pjax="true" href="/signup">注册</a>
                 </span>
             </h4>
             <div id="pjax-container">
@@ -38,7 +38,7 @@
                             <input type="password" name="password" id="sign_in_password" class="span2" placeholder="密码">
                         </div>
 
-                        <div class="col-sm-12" id="geetest-captcha"></div>
+                        <div id="geetest-captcha"></div>
 
                         <button class="ladda-button submit-button" data-color="blue" type="button">
                             <span class="ladda-label">登 录</span>
@@ -93,28 +93,10 @@
     @include('common/modefoot')
     
     <link rel="stylesheet" type="text/css" href="/res/style.css">
-    <script src="/res/signin.js"></script>
     <script src="http://static.geetest.com/static/tools/gt.js"></script>
+    <script src="/res/geetest.js"></script>
     <script type="text/javascript">
-    
-        //集成极验验证码
-        var login_flag = false;
-        var handler = function (captchaObj) {
-             captchaObj.appendTo("#geetest-captcha");
-             captchaObj.onSuccess(function () {
-                login_flag = true;
-            });
-        };
-        var callback = function(data){
-            initGeetest({
-                gt: data.gt,
-                challenge: data.challenge,
-                product: "float",
-                offline: !data.success
-            }, handler);
-        }
-        requestAjax(null, 'GET', '/geetest?rand='+Math.round(Math.random()*100), callback, true);
-        $("。submit-button").click(function(){
+        $(".submit-button").click(function(){
             var params = $("#signin-form").serializeJson();
             if(!login_flag){
                 error_noty("请完成滑块验证");
@@ -137,15 +119,6 @@
             }
             requestAjax(null, 'POST', '/signin', callback, true);
         })
-        function error_noty(text){
-            noty({
-                text: text,
-                layout: "topCenter",
-                type: "error",
-                timeout: 3500,
-                theme: "maleskineTheme"
-            })
-        }
     </script>
 </body>
 </html>

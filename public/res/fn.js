@@ -23,3 +23,13 @@
         return decodeURIComponent((new RegExp('[?|&]' + name + '=' + '([^&;]+?)(&|#|;|$)').exec(location.search)||[,''])[1].replace(/\+/g, '%20'))||null;
     };  
 })(jQuery);  
+
+function error_noty(text){
+    noty({
+        text: text,
+        layout: "topCenter",
+        type: "error",
+        timeout: 3500,
+        theme: "maleskineTheme"
+    })
+}
