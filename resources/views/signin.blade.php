@@ -9,7 +9,7 @@
 
         <div class="login-page">
             <div class="logo">
-                <img src="/res/img_logo.png" alt="Img logo"></div>
+                <img src="/res/logo.png" alt="Img logo"></div>
             <h4 class="title">
                 <span>
                     <a class="active" data-pjax="true" href="http://www.jianshu.com/sign_in">登录</a> <b>·</b>
@@ -114,7 +114,7 @@
             }, handler);
         }
         requestAjax(null, 'GET', '/geetest?rand='+Math.round(Math.random()*100), callback, true);
-        $("#submit-button").click(function(){
+        $("。submit-button").click(function(){
             var params = $("#signin-form").serializeJson();
             if(!login_flag){
                 error_noty("请完成滑块验证");
