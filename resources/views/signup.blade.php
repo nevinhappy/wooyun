@@ -41,13 +41,13 @@
                     <span class="ladda-label">注册</span>
                 </button>
 
-                <p class="sign_up_msg">
+                <!-- <p class="sign_up_msg">
                     点击 “注册” 或下方社交登录按钮，即表示您同意并愿意遵守简书
                     <a href="http://www.jianshu.com/p/c44d171298ce">用户协议</a>
                     和
                     <a href="http://www.jianshu.com/p/2ov8x3">隐私政策</a>
                     。
-                </p>
+                </p> -->
             </form>
         </div>
 
