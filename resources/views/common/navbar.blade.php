@@ -1,6 +1,6 @@
 <div class="navbar navbar-jianshu shrink">
     <div class="dropdown">
-        <a class="dropdown-toggle logo" id="dLabel" role="button" data-toggle="dropdown" data-target="#" href="javascript:void(0)">简</a>
+        <a class="dropdown-toggle logo" id="dLabel" role="button" data-toggle="dropdown" data-target="#" href="javascript:void(0)">乌</a>
         <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
             <li>
                 <a href="/"> <i class="fa fa-home"></i>
@@ -30,7 +30,7 @@
 </div>
 <div class="navbar navbar-jianshu expanded">
     <div class="dropdown">
-        <a class="active logo" role="button" data-original-title="个人主页" data-container="div.expanded" href="/"> <b>简</b>
+        <a class="active logo" role="button" data-original-title="个人主页" data-container="div.expanded" href="/"> <b>乌</b>
             <i class="fa fa-home"></i>
             <span class="title">首页</span>
         </a>
