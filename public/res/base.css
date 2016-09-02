@@ -7906,7 +7906,7 @@ button[data-color=green].disabled, button[data-color=green].disabled:hover, butt
 	padding: 0;
 	width: 18px;
 	height: 18px;
-	background: url(/iCheck/minimal/minimal-6553cab5f56acb97363067b296c92815.png) no-repeat;
+	background: url(/res/minimal.png) no-repeat;
 	border: none;
 	cursor: pointer
 }
@@ -10521,7 +10521,6 @@ button[data-color=green].disabled, button[data-color=green].disabled:hover, butt
 	float: right;
 	width: 100px;
 	height: 100px;
-	margin-right: 20px;
 }
 .article-list .have-img .wrap-img img {
 	width: 100%;
@@ -10594,7 +10593,11 @@ button[data-color=green].disabled, button[data-color=green].disabled:hover, butt
 }
 .page-title .search {
 	float: right;
-	margin-top: 10px
+	margin-top: 10px;
+	margin-right:150px;
+}
+.page-title .user-auth {
+	float: right;
 }
 .page-title .search .search_trigger .fa-search {
 	top: 3px;

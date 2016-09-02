@@ -2782,7 +2782,7 @@ footer .modal-body img {
 	content: "\f058"
 }
 .row-fluid .recommended .thumbnails {
-	padding-left: 36px;
+	padding: 0 31px;
 	margin: 70px 0 0
 }
 .row-fluid .recommended .sort-nav {
@@ -2798,7 +2798,8 @@ footer .modal-body img {
 }
 @media (max-width:768px) {
 	.row-fluid .recommended .page-title {
-		position: static
+		position: static;
+		margin-top: 47px;
 	}
 	.row-fluid .recommended .sort-nav {
 		padding-left: 10px;
@@ -2815,6 +2816,9 @@ footer .modal-body img {
 	}
 	.row-fluid .recommended .user-subscriptions {
 		margin-top: 15px
+	}
+	.row-fluid .recommended .thumbnails{
+		margin: 15px 0 0;
 	}
 }
 .authors-recommended {

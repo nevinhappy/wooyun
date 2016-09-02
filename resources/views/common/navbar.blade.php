@@ -15,6 +15,19 @@
         </ul>
     </div>
 </div>
+<div class="navbar-user">
+    <a class="login" data-signup-link="true" data-toggle="modal" href="/signup">
+        <i class="fa fa-user"></i>
+        注册
+    </a>
+    <a class="login" data-signin-link="true" data-toggle="modal" href="/signin">
+        <i class="fa fa-sign-in"></i>
+        登录
+    </a>
+    <a class="daytime set-view-mode pull-right" href="javascript:void(0)">
+        <i class="fa fa-moon-o"></i>
+    </a>
+</div>
 <div class="navbar navbar-jianshu expanded">
     <div class="dropdown">
         <a class="active logo" role="button" data-original-title="个人主页" data-container="div.expanded" href="/"> <b>简</b>
@@ -27,9 +40,13 @@
         </a>
     </div>
     <div class="nav-user">
-        <a href="http://www.jianshu.com/#view-mode-modal" data-toggle="modal">
+        <a href="#view-mode-modal" data-toggle="modal">
             <i class="fa fa-font"></i>
             <span class="title">显示模式</span>
+        </a>
+        <a class="signin" data-signin-link="true" data-toggle="modal" data-placement="right" data-original-title="登录" data-container="div.expanded" href="/signin">
+            <i class="fa fa-sign-in"></i>
+            <span class="title">登录</span>
         </a>
     </div>
 </div>

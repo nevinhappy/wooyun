@@ -11,4 +11,6 @@
 |
 */
 
-Route::controller("","HomeController");
+Route::get("signin","UserController@signin");
+Route::get("signup","UserController@signup");
+Route::controller("/","HomeController");

@@ -1,15 +1,3 @@
-
-    <footer>
-        <div class="footer-l">
-            <p>
-                ©2016
-                <a href="/" target="_blank">Jormin</a>
-                / 京ICP备15006639号-1
-            </p>
-        </div>
-
-    </footer>
-
     <div id="flash" class="hide"></div>
 
     <div id="view-mode-modal" tabindex="-1" class="modal hide read-modal" aria-hidden="false" data-js-module="view-mode-modal">
@@ -29,4 +17,24 @@
             <a class="btn font active" data-locale="zh-CN" href="javascript:void(null);">简</a>
             <a class="btn font hei " data-locale="zh-TW" href="javascript:void(null);">繁</a>
         </div>
+    </div>
+
+    <!-- Javascripts
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="/res/base.js"></script>
+    <script src="/res/reading-base.js"></script>
+    <script src="/res/home.js"></script>
+    <script src="/res/requestAjax.js"></script>
+    <script src="/res/layer/layer.js"></script>
+    <script type="text/javascript">
+      (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
+    </script>
+
+    <div style="display:none">
+        <a href="https://s11.cnzz.com/z_stat.php?id=1260252451&web_id=1260252451" target="_blank" title="站长统计">站长统计</a>
     </div>

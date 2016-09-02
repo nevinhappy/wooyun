@@ -10,13 +10,29 @@ use App\Http\Controllers\Controller;
 class UserController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * 登录
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
-    {
-        //
+    public function signin(){
+        if($_SERVER['REQUEST_METHOD'] == 'GET'){
+            return view("signin");
+        }else{
+
+        }
+    }
+
+    /**
+     * 注册
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function signup(){
+        if($_SERVER['REQUEST_METHOD'] == 'GET'){
+            return view("signup");
+        }else{
+
+        }
     }
 
     /**
