@@ -26,6 +26,7 @@
     <script src="/res/reading-base.js"></script>
     <script src="/res/home.js"></script>
     <script src="/res/requestAjax.js"></script>
+    <script src="/res/fn.js"></script>
     <script src="/res/layer/layer.js"></script>
     <script type="text/javascript">
       (function() {

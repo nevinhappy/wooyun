@@ -19,44 +19,37 @@
             <div id="pjax-container">
 
                 <div class="sign-in">
-                    <form class="form-horizontal" data-js-module="sign-in" action="http://www.jianshu.com/sessions" accept-charset="UTF-8" method="post">
-                        <input name="utf8" type="hidden" value="✓">
+                    <form class="form-horizontal" data-js-module="sign-in" action="/signin" accept-charset="UTF-8" method="post" id="signin-form">
+                        <input type="hidden" name="_token" value="{{ csrf_token() }}">
                         <input type="hidden" name="authenticity_token" value="3IL2rWEV7J41+YVoke/UElGx25HtOnSrHsoJ6H41bOAdwMU/YFLWEtb6OtUeaQyAqIvIdM6ed96obi1+SK06Sw==">
 
-                        <p id="signin_errors" class="signin_error hide"></p>
+                        <p id="signin_errors" class="signin_error hide">ssdsadsa</p>
 
                         <div class="input-prepend domestic ">
                             <span class="add-on">
                                 <i class="fa fa-user"></i>
                             </span>
-                            <input type="text" name="sign_in[name]" id="sign_in_name" value="" class="span2" placeholder="电子邮件"></div>
+                            <input type="text" name="email" id="sign_in_name" value="" class="span2" placeholder="电子邮件"></div>
 
                         <div class="input-prepend password ">
                             <span class="add-on">
                                 <i class="fa fa-unlock-alt"></i>
                             </span>
-                            <input type="password" name="sign_in[password]" id="sign_in_password" class="span2" placeholder="密码"></div>
-
-                        <input type="hidden" name="sign_in[is_foreign]" id="sign_in_is_foreign" value="false">
-
-                        <div class="captcha" data-captcha-type="geetest" data-js-module="captcha">
-                            <input name="captcha[validation][challenge]" autocomplete="off" type="hidden" value="1657435576b7d8d5a720ed3c0b1a0c76">
-                            <input name="captcha[validation][gt]" autocomplete="off" type="hidden" value="a10ea6a23a441db3d956598988dff3c4">
-                            <input name="captcha[validation][validate]" autocomplete="off" type="hidden">
-                            <input name="captcha[validation][seccode]" autocomplete="off" type="hidden">
-                            <input name="captcha[id]" type="hidden" autocomplete="off" value="b8011f4e-dd3e-4ba9-8b36-f68507ab40a7">
+                            <input type="password" name="password" id="sign_in_password" class="span2" placeholder="密码">
                         </div>
 
-                        <button class="ladda-button submit-button" data-color="blue">
+                        <div class="col-sm-12" id="geetest-captcha"></div>
+
+                        <button class="ladda-button submit-button" data-color="blue" type="button">
                             <span class="ladda-label">登 录</span>
                         </button>
 
                         <div class="control-group text-left">
                             <div class="icheckbox_minimal checked" style="position: relative;">
-                                <input type="checkbox" name="sign_in[remember_me]" id="sign_in_remember_me" value="true" checked="checked" style="position: absolute; opacity: 0;"> <ins class="iCheck-helper" style="position: absolute; top: 0%; left: 0%; display: block; width: 100%; height: 100%; margin: 0px; padding: 0px; background: rgb(255, 255, 255); border: 0px; opacity: 0;"></ins>
+                                <input type="checkbox" name="remember_me" id="sign_in_remember_me" value="true" checked="checked" style="position: absolute; opacity: 0;"> <ins class="iCheck-helper" style="position: absolute; top: 0%; left: 0%; display: block; width: 100%; height: 100%; margin: 0px; padding: 0px; background: rgb(255, 255, 255); border: 0px; opacity: 0;"></ins>
                             </div>
                             记住我
-                            <a href="http://www.jianshu.com/users/password/new">忘记密码</a>
+                            <a href="/findpwd">忘记密码</a>
                         </div>
 
                     </form>
@@ -101,5 +94,58 @@
     
     <link rel="stylesheet" type="text/css" href="/res/style.css">
     <script src="/res/signin.js"></script>
+    <script src="http://static.geetest.com/static/tools/gt.js"></script>
+    <script type="text/javascript">
+    
+        //集成极验验证码
+        var login_flag = false;
+        var handler = function (captchaObj) {
+             captchaObj.appendTo("#geetest-captcha");
+             captchaObj.onSuccess(function () {
+                login_flag = true;
+            });
+        };
+        var callback = function(data){
+            initGeetest({
+                gt: data.gt,
+                challenge: data.challenge,
+                product: "float",
+                offline: !data.success
+            }, handler);
+        }
+        requestAjax(null, 'GET', '/geetest?rand='+Math.round(Math.random()*100), callback, true);
+        $("#submit-button").click(function(){
+            var params = $("#signin-form").serializeJson();
+            if(!login_flag){
+                error_noty("请完成滑块验证");
+                return;
+            }
+            if(!params.email){
+                error_noty("请输入邮箱");
+                return;
+            }
+            if(!params.password){
+                error_noty("请输入密码");
+                return;
+            }
+            var callback = function(msg){
+                if(msg.result == 0){
+                    window.location.reload();
+                }else{
+                    error_noty(msg.description);
+                }
+            }
+            requestAjax(null, 'POST', '/signin', callback, true);
+        })
+        function error_noty(text){
+            noty({
+                text: text,
+                layout: "topCenter",
+                type: "error",
+                timeout: 3500,
+                theme: "maleskineTheme"
+            })
+        }
+    </script>
 </body>
 </html>

@@ -7,18 +7,41 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
+use Germey\Geetest\CaptchaGeetest;
+
 class UserController extends Controller
 {
+    use CaptchaGeetest;
+
     /**
      * 登录
      *
      * @return \Illuminate\Http\Response
      */
-    public function signin(){
+    public function signin(Request $request){
         if($_SERVER['REQUEST_METHOD'] == 'GET'){
             return view("signin");
         }else{
-
+            $result = $this->validate($request, [
+                'geetest_challenge' => 'geetest',
+            ], [
+                'geetest' => config('geetest.server_fail_alert')
+            ]);
+            $email = I("email");
+            $password = I("password");
+            if (!$result || is_null($email) || is_null($password)) {
+                die;
+            }
+            $limit = array(
+                'email' => $email,
+                'password' => $password
+                );
+            $user = DB::table("user")->where($limit)->take(1)->get();
+            if(is_null($user)){
+                returnMsg(-1,"邮箱或密码错误");
+            }
+            session("user",$user);
+            returnMsg(0,"登录成功");
         }
     }
 
