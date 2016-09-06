@@ -2,9 +2,6 @@
 
 <body class="output fluid zh cn win reader-day-mode reader-font2" data-js-module="recommendation" data-locale="zh-CN">
     @include("common/navbar")
-
-   
-
     <div class="container">
 
         <div class="login-page">
@@ -21,10 +18,6 @@
                 <div class="sign-in">
                     <form class="form-horizontal" data-js-module="sign-in" action="/signin" accept-charset="UTF-8" method="post" id="signin-form">
                         <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                        <input type="hidden" name="authenticity_token" value="3IL2rWEV7J41+YVoke/UElGx25HtOnSrHsoJ6H41bOAdwMU/YFLWEtb6OtUeaQyAqIvIdM6ed96obi1+SK06Sw==">
-
-                        <p id="signin_errors" class="signin_error hide">ssdsadsa</p>
-
                         <div class="input-prepend domestic ">
                             <span class="add-on">
                                 <i class="fa fa-user"></i>
@@ -106,18 +99,22 @@
                 error_noty("请输入邮箱");
                 return;
             }
+            if(!isEmail(params.email)){
+                error_noty("请输入正确格式的邮箱");
+                return;
+            }
             if(!params.password){
                 error_noty("请输入密码");
                 return;
             }
             var callback = function(msg){
                 if(msg.result == 0){
-                    window.location.reload();
+                    window.location.href = msg.data;
                 }else{
                     error_noty(msg.description);
                 }
             }
-            requestAjax(null, 'POST', '/signin', callback, true);
+            requestAjax(params, 'POST', '/signin', callback, true);
         })
     </script>
 </body>

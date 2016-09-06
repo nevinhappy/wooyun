@@ -23,7 +23,8 @@
             "App\\": "app/"
         },
         "files": [
-            "app/Common/function.php"
+            "app/Common/function.php",
+            "app/Common/http.php"
         ]
     },
     "autoload-dev": {

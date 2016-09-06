@@ -8,7 +8,7 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
 use Germey\Geetest\CaptchaGeetest;
-
+use Session;
 class UserController extends Controller
 {
     use CaptchaGeetest;
@@ -41,7 +41,11 @@ class UserController extends Controller
                 returnMsg(-1,"邮箱或密码错误");
             }
             session("user",$user);
-            returnMsg(0,"登录成功");
+            $url = session("lasturl");
+            if(is_null($url)){
+                $url = "/";
+            }
+            returnMsg(0,"登录成功",$url);
         }
     }
 
@@ -50,11 +54,51 @@ class UserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function signup(){
+    public function signup(Request $request){
         if($_SERVER['REQUEST_METHOD'] == 'GET'){
             return view("signup");
         }else{
-
+            $result = $this->validate($request, [
+                'geetest_challenge' => 'geetest',
+            ], [
+                'geetest' => config('geetest.server_fail_alert')
+            ]);
+            $email = I("email");
+            $password = I("password");
+            $nickname = I("nickname");
+            p($email);
+            p($password);
+            p($nickname);
+            if (!$result || is_null($email) || is_null($password) || is_null($nickname)) {
+                die;
+            }
+            if(!isEmail($email)){
+                returnMsg(-1,"请输入正确格式的邮箱");
+            }
+            $limit = array(
+                'email' => $email,
+                );
+            $user = DB::table("user")->where($limit)->take(1)->get();
+            if($user){
+                returnMsg(-1,"邮箱已注册");
+            }
+            $limit = array(
+                'nickname' => $nickname,
+                );
+            $user = DB::table("user")->where($limit)->take(1)->get();
+            if($user){
+                returnMsg(-1,"昵称已被使用");
+            }
+            $activecode = md5(Session::getId().time().$email);
+            $data = array(
+                'email' => $email,
+                'nickname' => $nickname,
+                'password' => $password,
+                'activecode' => $activecode
+                );
+            DB::table("user")->insert($data);
+            $url = "signin";
+            returnMsg(0,"注册成功",$url);
         }
     }
 
