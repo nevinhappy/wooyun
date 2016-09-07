@@ -13,5 +13,6 @@
 
 Route::any("signin","UserController@signin");
 Route::any("signup","UserController@signup");
+Route::any("signout","UserController@signout");
 Route::get("geetest","UserController@getGeetest");
 Route::controller("/","HomeController");

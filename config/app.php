@@ -99,6 +99,8 @@ return [
 
     'log' => env('APP_LOG', 'single'),
 
+    'md5_sort' => 'a3e1acde91df7d9a7091a31b0caf8d39',
+
     /*
     |--------------------------------------------------------------------------
     | Autoloaded Service Providers

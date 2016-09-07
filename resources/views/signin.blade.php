@@ -33,7 +33,7 @@
 
                         <div id="geetest-captcha"></div>
 
-                        <button class="ladda-button submit-button" data-color="blue" type="button">
+                        <button class="ladda-button submit-button" data-color="blue" type="button" id="signin-btn">
                             <span class="ladda-label">登 录</span>
                         </button>
 
@@ -88,34 +88,5 @@
     <link rel="stylesheet" type="text/css" href="/res/style.css">
     <script src="http://static.geetest.com/static/tools/gt.js"></script>
     <script src="/res/geetest.js"></script>
-    <script type="text/javascript">
-        $(".submit-button").click(function(){
-            var params = $("#signin-form").serializeJson();
-            if(!login_flag){
-                error_noty("请完成滑块验证");
-                return;
-            }
-            if(!params.email){
-                error_noty("请输入邮箱");
-                return;
-            }
-            if(!isEmail(params.email)){
-                error_noty("请输入正确格式的邮箱");
-                return;
-            }
-            if(!params.password){
-                error_noty("请输入密码");
-                return;
-            }
-            var callback = function(msg){
-                if(msg.result == 0){
-                    window.location.href = msg.data;
-                }else{
-                    error_noty(msg.description);
-                }
-            }
-            requestAjax(params, 'POST', '/signin', callback, true);
-        })
-    </script>
 </body>
 </html>

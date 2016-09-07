@@ -9,6 +9,9 @@ use App\Http\Controllers\Controller;
 
 use Germey\Geetest\CaptchaGeetest;
 use Session;
+use Validator;
+use DB;
+
 class UserController extends Controller
 {
     use CaptchaGeetest;
@@ -22,25 +25,26 @@ class UserController extends Controller
         if($_SERVER['REQUEST_METHOD'] == 'GET'){
             return view("signin");
         }else{
-            $result = $this->validate($request, [
+            $validator = Validator::make($request->all(), [
                 'geetest_challenge' => 'geetest',
-            ], [
-                'geetest' => config('geetest.server_fail_alert')
             ]);
+            if($validator->fails()){
+                // returnMsg(-1,config('geetest.server_fail_alert'));
+            }
             $email = I("email");
             $password = I("password");
-            if (!$result || is_null($email) || is_null($password)) {
+            if (is_null($email) || is_null($password)) {
                 die;
             }
             $limit = array(
                 'email' => $email,
-                'password' => $password
+                'password' => md5($password.config('md5_sort'))
                 );
-            $user = DB::table("user")->where($limit)->take(1)->get();
+            $user = DB::table("user")->where($limit)->first();
             if(is_null($user)){
                 returnMsg(-1,"邮箱或密码错误");
             }
-            session("user",$user);
+            session(['uid' => $user->id]);
             $url = session("lasturl");
             if(is_null($url)){
                 $url = "/";
@@ -58,18 +62,16 @@ class UserController extends Controller
         if($_SERVER['REQUEST_METHOD'] == 'GET'){
             return view("signup");
         }else{
-            $result = $this->validate($request, [
+            $validator = Validator::make($request->all(), [
                 'geetest_challenge' => 'geetest',
-            ], [
-                'geetest' => config('geetest.server_fail_alert')
             ]);
+            if($validator->fails()){
+                returnMsg(-1,config('geetest.server_fail_alert'));
+            }
             $email = I("email");
             $password = I("password");
             $nickname = I("nickname");
-            p($email);
-            p($password);
-            p($nickname);
-            if (!$result || is_null($email) || is_null($password) || is_null($nickname)) {
+            if (is_null($email) || is_null($password) || is_null($nickname)) {
                 die;
             }
             if(!isEmail($email)){
@@ -93,13 +95,23 @@ class UserController extends Controller
             $data = array(
                 'email' => $email,
                 'nickname' => $nickname,
-                'password' => $password,
-                'activecode' => $activecode
+                'password' => md5($password.config('md5_sort')),
+                'active_code' => $activecode
                 );
             DB::table("user")->insert($data);
             $url = "signin";
             returnMsg(0,"注册成功",$url);
         }
+    }
+
+    /**
+     * 登出
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function signout(Request $request){
+        $request->session()->forget('uid');
+        return redirect('/');
     }
 
     /**

@@ -33,7 +33,7 @@
 
                     <div id="geetest-captcha"></div>
 
-                    <button name="button" type="button" class="ladda-button submit-button" data-color="green" data-disable-with="<span class='ladda-label'>loading</span>">
+                    <button name="button" type="button" class="ladda-button submit-button" data-color="green" data-disable-with="<span class='ladda-label'>loading</span>" id="signup-btn">
                         <span class="ladda-label">注册</span>
                     </button>
 
@@ -83,41 +83,5 @@
 <link rel="stylesheet" type="text/css" href="/res/style.css">
 <script src="http://static.geetest.com/static/tools/gt.js"></script>
 <script src="/res/geetest.js"></script>
-<script type="text/javascript">
-    $(".submit-button").click(function(){
-        var params = $("#signup-form").serializeJson();
-        if(!login_flag){
-            error_noty("请完成滑块验证");
-            return;
-        }
-        if(!params.email){
-            error_noty("请输入邮箱");
-            return;
-        }
-        if(!isEmail(params.email)){
-            error_noty("请输入正确格式的邮箱");
-            return;
-        }
-        if(!params.nickname){
-            error_noty("请输入昵称");
-            return;
-        }
-        if(!params.password){
-            error_noty("请输入密码");
-            return;
-        }
-        if(passwordLevel(params.password) == 1){
-            error_noty("您的密码强度为弱，安全起见，建议您更换一个复杂的密码");
-            return;
-        }
-        var callback = function(msg){
-            error_noty(msg.description);
-            if(msg.result == 0){
-                setTimeout("window.location.href = "+msg.data,1500);
-            }
-        }
-        requestAjax(params, 'POST', '/signup', callback, true);
-    })
-</script>
 </body>
 </html>
