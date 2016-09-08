@@ -44,7 +44,7 @@ class UserController extends Controller
             if(is_null($user)){
                 returnMsg(-1,"邮箱或密码错误");
             }
-            session(['uid' => $user->id]);
+            $request->session()->put('uid',$user->id);
             $url = session("lasturl");
             if(is_null($url)){
                 $url = "/";

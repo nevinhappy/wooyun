@@ -28,7 +28,7 @@ return [
 
     'url' => 'http://localhost',
 
-    'image_domain' => 'http://ocqauliw7.bkt.clouddn.com/',
+    'image_domain' => env('IMAGE_DOMAIN'),
 
     /*
     |--------------------------------------------------------------------------

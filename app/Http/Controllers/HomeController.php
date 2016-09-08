@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 
 use DB;
 use Session;
+use Redis;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
@@ -16,7 +17,7 @@ class HomeController extends Controller{
      *
      * @return \Illuminate\Http\Response
      */
-    public function getIndex()
+    public function getIndex(Request $request)
     {
         $column = "bugs";
         $keyword = "";
