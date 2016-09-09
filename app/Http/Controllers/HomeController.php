@@ -19,6 +19,11 @@ class HomeController extends Controller{
      */
     public function getIndex(Request $request)
     {
+        // Redis::set('name', 'Taylor');die;
+        // session(['uid'=>111]);
+        $request->session()->put('uid',22);
+        p($request->session()->get('uid'));
+        die;
         $column = "bugs";
         $keyword = "";
         $articles = DB::table("article")->where('column', $column)->orderBy("created_at","desc")->take(30)->get();
