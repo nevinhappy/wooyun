@@ -19,8 +19,10 @@ class HomeController extends Controller{
      */
     public function getIndex(Request $request)
     {
-        // Redis::set('name', 'Taylor');die;
-        // session(['uid'=>111]);
+        // $request->session()->put('site',$_SERVER['HTTP_HOST']);
+        // p($request->session()->get('site'));
+        // $request->session()->save();
+        p($request->session()->all());die;
         $request->session()->put('uid',22);
         p($request->session()->get('uid'));
         die;

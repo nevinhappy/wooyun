@@ -115,7 +115,7 @@ return [
 
         'cluster' => false,
 
-       'default' => [
+        'default' => [
              'host'     => env('REDIS_HOST'),
              'port'     => env('REDIS_PORT'),
              'database' => 0,
