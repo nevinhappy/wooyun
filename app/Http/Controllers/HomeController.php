@@ -20,12 +20,9 @@ class HomeController extends Controller{
     public function getIndex(Request $request)
     {
         // $request->session()->put('site',$_SERVER['HTTP_HOST']);
-        // p($request->session()->get('site'));
+        p($request->session()->get('site'));
         // $request->session()->save();
         p($request->session()->all());die;
-        $request->session()->put('uid',22);
-        p($request->session()->get('uid'));
-        die;
         $column = "bugs";
         $keyword = "";
         $articles = DB::table("article")->where('column', $column)->orderBy("created_at","desc")->take(30)->get();
