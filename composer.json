@@ -8,7 +8,9 @@
         "php": ">=5.5.9",
         "laravel/framework": "5.1.*",
         "germey/geetest": "^1.0",
-        "predis/predis": "^1.1"
+        "predis/predis": "^1.1",
+        "fabpot/goutte": "^3.1",
+        "guzzlehttp/guzzle": "^6.2"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",
@@ -25,7 +27,8 @@
         },
         "files": [
             "app/Common/function.php",
-            "app/Common/http.php"
+            "app/Common/http.php",
+            "app/Library/idencode.php"
         ]
     },
     "autoload-dev": {

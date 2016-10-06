@@ -11,9 +11,10 @@ use Germey\Geetest\CaptchaGeetest;
 use Session;
 use Validator;
 use DB;
+use App\Models\User;
+use App\Models\Article;
 
-class UserController extends Controller
-{
+class UserController extends Controller{
     use CaptchaGeetest;
 
     /**
@@ -115,68 +116,36 @@ class UserController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
+     * 用户的最新文章
+     * @return [type] [description]
      */
-    public function create()
-    {
-        //
+    public function latestarticles($u){
+        $uid = decode_uid($u);
+        if(!$uid){
+            abort(404);
+        }
+        $user = User::find($uid);
+        $column = "latestarticles";
+        $keyword = "";
+        $image_domain = config('app.image_domain');
+        $articles = Article::where('user_id', $uid)->orderBy("created_at","desc")->take(30)->get();
+        return view("user/uarticles",compact("articles","column","keyword","image_domain","user"));
     }
 
     /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * 用户的最热文章
+     * @return [type] [description]
      */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
+    public function hotarticles($uid){
+        $uid = decode_uid($uid);
+        if(!$uid){
+            abort(404);
+        }
+        $user = User::find($uid);
+        $column = "hotarticles";
+        $keyword = "";
+        $image_domain = config('app.image_domain');
+        $articles = Article::where('user_id', $uid)->orderBy("view","desc")->take(30)->get();
+        return view("user/uarticles",compact("articles","column","keyword","image_domain","user"));
     }
 }

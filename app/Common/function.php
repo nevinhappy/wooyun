@@ -1,5 +1,7 @@
 <?php
-	
+	// use IDEncode;
+	use App\Models\User;
+	use App\Models\Article;
 	/**
 	 * 浏览器友好的变量输出
 	 * @param mixed $var 变量
@@ -343,18 +345,19 @@
 
 	/**
 	 * 生成二维码
-	 * text:需要生成二维码的数据，默认:http://www.elyt.cn
-	 * size:图片每个黑点的像素,默认4
-	 * level:纠错等级,默认L
+	 * text:需要生成二维码的数据
+	 * matrixPointSize:图片每个黑点的像素,默认4
+	 * errorCorrectionLevel:纠错等级,默认L
 	 * padding:图片外围空白大小，默认2
 	 * logo:全地址，默认为false
 	 */
-	function mkqrcode($text='http://www.elyt.cn',$filename,$size='4',$level='L',$padding=2,$logo=false){
-	    $path='/Upload/qrcode/';
-	    $QR=$_SERVER['DOCUMENT_ROOT'].'/'.$path.$filename;
-	    vendor("phpqrcode.phpqrcode");
-	    QRcode::png($text,$QR, $level, $size,$padding);
-	    if($logo !== false){
+	function mkqrcode($text,$logo="/data/avatars/headimg.png",$matrixPointSize=4,$errorCorrectionLevel="L",$padding=2){
+	    require(app_path().DIRECTORY_SEPARATOR."Library".DIRECTORY_SEPARATOR."phpqrcode".DIRECTORY_SEPARATOR."phpqrcode.php");
+	    $path = "/data/qrs/".md5($text.$logo.$matrixPointSize).".png";
+	    $QR = public_path().$path;
+	    if(!file_exists($QR)){
+		    QRcode::png($text,$QR, $errorCorrectionLevel, $matrixPointSize,$padding);
+		    $logo = public_path().$logo;
 	        $QR = imagecreatefromstring(file_get_contents($QR));
 	        $logo = imagecreatefromstring(file_get_contents($logo));
 	        $QR_width = imagesx($QR);
@@ -366,9 +369,9 @@
 	        $logo_qr_height = $logo_height / $scale;
 	        $from_width = ($QR_width - $logo_qr_width) / 2;
 	        imagecopyresampled($QR, $logo, $from_width, $from_width, 0, 0, $logo_qr_width, $logo_qr_height, $logo_width, $logo_height);
+	        imagepng($QR,public_path().$path);
 	    }
-	    header("Content-Type:image/jpg");
-	    imagepng($QR);
+	    return $path;
 	}
 	
     /**
@@ -395,4 +398,73 @@
 	    $shell="bash /shell/db/domains.sh $wd_sitedomain_find $wd_sitedomains";
 	    @system($shell);//这个有返回值
 	    #@exec($shell);//这个没有任何的返回
+	}
+
+	/**
+	 * 加密用户ID
+	 * @param  [type] $uid [description]
+	 * @return [type]      [description]
+	 */
+	function encode_uid($uid){
+		// $obj = new IDEncode();
+		// return $obj->encode($uid);
+	}
+
+	/**
+	 * 解密用户ID
+	 * @param  [type] $str [description]
+	 * @return [type]      [description]
+	 */
+	function decode_uid($str){
+		// $obj = new IDEncode();
+		// return $obj->decode($str);
+	}
+
+	/**
+	 * 生成用户主页的url
+	 * @param  [type] $uid [description]
+	 * @param  string $act [description]
+	 * @return [type]      [description]
+	 */
+	function url_user($uid,$act="latestarticles"){
+		return "http://".$_SERVER['HTTP_HOST'].DIRECTORY_SEPARATOR."user".DIRECTORY_SEPARATOR.encode_uid($uid).DIRECTORY_SEPARATOR.$act;
+	}
+
+	/**
+	 * 获取用户头像
+	 * @param  [type] $uid  [description]
+	 * @param  [type] $size [description]
+	 * @return [type]       [description]
+	 */
+	function url_avatar($uid){
+		if(!$uid){
+			return null;
+		}
+		$user = User::find($uid);
+		if(!$user){
+			return null;
+		}
+		if($user->headimg){
+			return $user->headimg;
+		}else{
+			return "/data/avatars/headimg.png";
+		}
+	}
+
+	function count_num($uid,$type="article"){
+		if(!$uid){
+			return 0;
+		}
+		$uid = intval($uid);
+		switch($type){
+			case "article":
+				$count_num = Article::where('user_id',$uid)->count();
+				break;
+			case "view":
+				$count_num = Article::where('user_id',$uid)->sum("view");
+				break;
+			default:
+				$count_num = 0;
+		}
+		return $count_num;
 	}

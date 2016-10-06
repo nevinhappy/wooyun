@@ -27,13 +27,8 @@
                                     </a>
                                     <div>
                                         <p class="list-top">
-                                            <a class="author-name blue-link" target="_blank" href="javascript:void(0)">
-                                                @if ($article->column == 'drops')
-                                                    管理员
-                                                @else
-                                                    {{ $article->author }}
-                                                @endif
-                                            </a> <em>·</em>
+                                            <a class="author-name blue-link" target="_blank" href="{{url_user($article->user_id)}}" target="_blank">{{ $article->author }}</a>
+                                            <em>·</em>
                                             <span class="time" data-shared-at="{{ $article->created_at }}">{{ $article->created_at }}</span>
                                         </p>
                                         <h4 class="title">

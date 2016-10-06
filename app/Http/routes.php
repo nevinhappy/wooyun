@@ -15,6 +15,9 @@ Route::any("signin","UserController@signin");
 Route::any("signup","UserController@signup");
 Route::any("signout","UserController@signout");
 Route::get("geetest","UserController@getGeetest");
+Route::get("user/{u}/latestarticles","UserController@latestarticles");
+Route::get("user/{u}/hotarticles","UserController@hotarticles");
+Route::controller("user","UserController");
 Route::controller("/","HomeController");
 
 // 认证路由...

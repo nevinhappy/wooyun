@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use DB;
 use Session;
 use Redis;
+use App\Models\Article;
+use App\Models\User;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
@@ -17,15 +19,11 @@ class HomeController extends Controller{
      *
      * @return \Illuminate\Http\Response
      */
-    public function getIndex(Request $request)
-    {
-        // $request->session()->put('site',$_SERVER['HTTP_HOST']);
-        p($request->session()->get('site'));
-        // $request->session()->save();
-        p($request->session()->all());die;
+    public function getIndex(Request $request){
         $column = "bugs";
         $keyword = "";
-        $articles = DB::table("article")->where('column', $column)->orderBy("created_at","desc")->take(30)->get();
+        $articles = 
+        $articles = Article::where('column', $column)->orderBy("created_at","desc")->take(30)->get();
         $image_domain = config('app.image_domain');
         return view("articles", compact("articles","column","keyword","image_domain"));
     }
@@ -39,7 +37,7 @@ class HomeController extends Controller{
     {
         $column = "drops";
         $keyword = "";
-        $articles = DB::table("article")->where('column', $column)->orderBy("created_at","desc")->take(30)->get();
+        $articles = Article::where('column', $column)->orderBy("created_at","desc")->take(30)->get();
         $image_domain = config('app.image_domain');
         return view("articles", compact("articles","column","keyword","image_domain"));
     }
@@ -54,7 +52,7 @@ class HomeController extends Controller{
         $column = I('column');
         $column = $column != 'drops' ? 'bugs' : 'drops';
         $keyword = I('q');
-        $db_obj = DB::table("article")->where('column',$column);
+        $db_obj = Article::where('column',$column);
         if(!is_null($keyword)){
             $db_obj->where('title','like','%'.$keyword.'%');
         }
@@ -75,7 +73,7 @@ class HomeController extends Controller{
         $keyword = I('q');
         $p = intval(I('p'));
         $p = $p <= 0 ? 1 : $p;
-        $db_obj = DB::table("article")->where('column',$column);
+        $db_obj = Article::where('column',$column);
         if(!is_null($keyword)){
             $db_obj->where('title','like','%'.$keyword.'%');
         }
@@ -98,13 +96,13 @@ class HomeController extends Controller{
      */
     public function getArticle($id)
     {
-        $article = DB::table("article")->find($id);
+        $article = Article::find($id);
         if(is_null($article)){
             abort(404);
         }
         $article->view += 1;
-        DB::table("article")->where('id',$id)->update(['view'=>$article->view]);
-        $article->content = file_get_contents(base_path().'\public\\'.$article->path);
+        Article::where('id',$id)->update(['view'=>$article->view]);
+        $article->content = file_get_contents(base_path().DIRECTORY_SEPARATOR.'public'.DIRECTORY_SEPARATOR.str_replace('\\',DIRECTORY_SEPARATOR,$article->path));
 
         $image_domain = config('app.image_domain');
         $article->content = str_replace("../images/",$image_domain,$article->content);
